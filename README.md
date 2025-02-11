@@ -12,7 +12,7 @@
 
 Just finished connecting to the database. Next steps:
 
-- [ ] Update schema to show files and folders
+- [X] Update schema to show files and folders
 - [ ] Insert exapmles
 - [ ] Render in UI
 - [ ] Push to production
