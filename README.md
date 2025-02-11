@@ -20,5 +20,5 @@ Just finished connecting to the database. Next steps:
 
 ## Note from 2-11-2025
 
-- [ ] Add Sandbox for mock-data
-- [ ] Change folder state management to link components
+- [x] Change folder state management to link components
+- 
