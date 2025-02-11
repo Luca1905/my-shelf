@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Set up database and data model
+- [x] Set up database and data model
 - [ ] Move folder open state to URL
 - [ ] Add auth
 - [ ] Add file uploading
@@ -12,10 +12,10 @@
 
 Just finished connecting to the database. Next steps:
 
-- [X] Update schema to show files and folders
-- [ ] Insert exapmles
-- [ ] Render in UI
-- [ ] Push to production
+- [x] Update schema to show files and folders
+- [x] Insert exapmles
+- [x] Render in UI
+- [x] Push to production
 
 ## Note from 2-11-2025
 
