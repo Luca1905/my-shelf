@@ -27,7 +27,7 @@ Just finished connecting to the database. Next steps:
 
 - [x] Add ownership
 - [x] File upload to right folder
+- [x] Change allowed files
 - [ ] Homepage
 - [ ] Delete files
-- [ ] Change allowed files
 - [ ] Add SSR plugin for UT button
