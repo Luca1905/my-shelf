@@ -25,7 +25,8 @@ Just finished connecting to the database. Next steps:
 
 ## Note from 2-12-2025
 
+- [x] Add ownership
 - [ ] Homepage
-- [ ] File upload to right folder
+- [x] File upload to right folder
 - [ ] Delete files
 - [ ] Change allowed files
