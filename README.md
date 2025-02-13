@@ -8,6 +8,7 @@
 - [x] Add file uploading
 - [x] Add analytics
 - [ ] Onboarding
+- [ ] make clerk prod ready
 
 ## Note from 2-10-2025
 
@@ -28,6 +29,7 @@ Just finished connecting to the database. Next steps:
 - [x] Add ownership
 - [x] File upload to right folder
 - [x] Change allowed files
+- [x] make sorting order consistent
 - [ ] Homepage
 - [ ] Delete files
 - [ ] Add SSR plugin for UT button
