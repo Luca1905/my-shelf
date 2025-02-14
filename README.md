@@ -30,6 +30,7 @@ Just finished connecting to the database. Next steps:
 - [x] File upload to right folder
 - [x] Change allowed files
 - [x] make sorting order consistent
+- [x] Delete files
+- [ ] Delete folders
 - [ ] Homepage
-- [ ] Delete files
 - [ ] Add SSR plugin for UT button
