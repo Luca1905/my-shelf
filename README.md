@@ -7,10 +7,20 @@
 - [x] Add auth
 - [x] Add file uploading
 - [x] Add analytics
-- [ ] Onboarding
+- [x] Onboarding
 - [ ] make clerk prod ready
+- [ ] Create Folders
+- [ ] Folder rename
+- [ ] Delete folders
+- [ ] Add SSR plugin for UT button
+- [ ] Access control (check owner before rendering f page)
+- [ ] UI indication for file type
+- [ ] File view
+- [ ] File search
+- [ ] Toast for uploading
+- [ ] indicate row when deleting 
 
-## Note from 2-10-2025
+- ## Note from 2-10-2025
 
 Just finished connecting to the database. Next steps:
 
@@ -31,6 +41,4 @@ Just finished connecting to the database. Next steps:
 - [x] Change allowed files
 - [x] make sorting order consistent
 - [x] Delete files
-- [ ] Delete folders
-- [ ] Homepage
-- [ ] Add SSR plugin for UT button
+- [x] Homepage
