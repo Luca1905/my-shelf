@@ -8,19 +8,19 @@
 - [x] Add file uploading
 - [x] Add analytics
 - [x] Onboarding
-- [ ] make clerk prod ready
+- [x] Access control (check owner before rendering f page)
+- [x] make clerk prod ready
 - [ ] Create Folders
 - [ ] Folder rename
 - [ ] Delete folders
 - [ ] Add SSR plugin for UT button
-- [ ] Access control (check owner before rendering f page)
 - [ ] UI indication for file type
 - [ ] File view
 - [ ] File search
 - [ ] Toast for uploading
 - [ ] indicate row when deleting 
 
-- ## Note from 2-10-2025
+## Note from 2-10-2025
 
 Just finished connecting to the database. Next steps:
 
@@ -42,3 +42,9 @@ Just finished connecting to the database. Next steps:
 - [x] make sorting order consistent
 - [x] Delete files
 - [x] Homepage
+
+## Note from 2-19-2025
+
+- [x] clerk prod deployed
+- [ ] add google one tap
+- [ ] false redirect after sign up, to sign in page
