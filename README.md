@@ -46,5 +46,4 @@ Just finished connecting to the database. Next steps:
 ## Note from 2-19-2025
 
 - [x] clerk prod deployed
-- [ ] add google one tap
 - [ ] false redirect after sign up, to sign in page
