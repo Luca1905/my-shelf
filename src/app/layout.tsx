@@ -3,6 +3,10 @@ import { type Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { PostHogProvider } from "./_providers/posthog-provider";
 import { Inter } from "next/font/google";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+
 
 const inter = Inter({ subsets: ["latin"], weight: "600" });
 
@@ -21,6 +25,7 @@ export default function RootLayout({
         <body
           className={`${inter.className} dark bg-background text-foreground antialiased`}
         >
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <PostHogProvider>{children}</PostHogProvider>
         </body>
       </html>

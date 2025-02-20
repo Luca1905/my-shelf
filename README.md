@@ -10,10 +10,10 @@
 - [x] Onboarding
 - [x] Access control (check owner before rendering f page)
 - [x] make clerk prod ready
+- [x] Add SSR plugin for UT button
 - [ ] Create Folders
 - [ ] Folder rename
 - [ ] Delete folders
-- [ ] Add SSR plugin for UT button
 - [ ] UI indication for file type
 - [ ] File view
 - [ ] File search
