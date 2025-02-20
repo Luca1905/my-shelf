@@ -47,3 +47,8 @@ Just finished connecting to the database. Next steps:
 
 - [x] clerk prod deployed
 - [ ] false redirect after sign up, to sign in page
+
+## Note from 2-20-2025
+
+- [ ] "My drive" in breadcrumbs points to folder with id 1, fix this
+- [ ] remove "root" from breadcrumbs
