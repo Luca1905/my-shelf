@@ -22,10 +22,10 @@ export default function DriveContents(props: {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href="/f/1" className="mr-2 text-gray-300 hover:text-white">
+            <Link href={`/f/${props.parents[0]?.id}`} className="mr-2 text-gray-300 hover:text-white">
               My Drive
             </Link>
-            {props.parents.map((folder, _) => (
+            {props.parents.slice(1).map((folder, _) => (
               <div key={folder.id} className="flex items-center">
                 <ChevronRight className="mx-2 text-gray-500" size={16} />
                 <Link
