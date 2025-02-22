@@ -78,6 +78,19 @@ export const MUTATIONS = {
     });
   },
 
+  createFolder: async function (input: {
+    folder: {
+      name: string;
+      parent: number;
+    };
+    userId: string;
+  }) {
+    return await db.insert(foldersSchema).values({
+      ...input.folder,
+      ownerId: input.userId,
+    });
+  },
+
   onboardUser: async function (userId: string) {
     const rootFolder = await db
       .insert(foldersSchema)

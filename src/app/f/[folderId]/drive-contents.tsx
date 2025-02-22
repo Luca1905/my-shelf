@@ -7,6 +7,8 @@ import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { createFolder } from "~/server/actions";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -64,6 +66,12 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
+        <Button variant="outline" onClick={async () => {
+          await createFolder(props.currentFolderId);
+          navigate.refresh();
+        }}>
+          New Folder
+        </Button>
         <UploadButton 
           endpoint="shelfUploader" 
           onClientUploadComplete={() => {

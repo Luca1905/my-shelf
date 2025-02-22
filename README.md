@@ -52,3 +52,8 @@ Just finished connecting to the database. Next steps:
 
 - [x] "My drive" in breadcrumbs points to folder with id 1, fix this
 - [x] remove "root" from breadcrumbs
+
+## Note from 2-22-2025
+
+- [x] added folder creation
+- [ ] folder name 
