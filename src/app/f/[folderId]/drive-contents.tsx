@@ -9,6 +9,7 @@ import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { createFolder } from "~/server/actions";
+import { useState } from "react";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -18,6 +19,7 @@ export default function DriveContents(props: {
   currentFolderId: number;
 }) {
   const navigate = useRouter();
+  const [folderName, setFolderName] = useState("");
 
   return (
     <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
@@ -66,12 +68,29 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <Button variant="outline" onClick={async () => {
-          await createFolder(props.currentFolderId);
-          navigate.refresh();
-        }}>
-          New Folder
-        </Button>
+        <div className="flex gap-2 mt-4">
+          <input
+            type="text"
+            placeholder="Folder name"
+            className="rounded bg-gray-800 px-3 py-2 text-gray-100 border border-gray-700 focus:outline-none focus:border-gray-500"
+            onChange={(e) => setFolderName(e.target.value)}
+            value={folderName}
+          />
+          <Button 
+            variant="outline" 
+            onClick={async () => {
+              if (folderName.trim()) {
+                await createFolder(props.currentFolderId, folderName);
+                setFolderName("");
+                navigate.refresh();
+              } else {
+                setFolderName("Folder name is required");
+              }
+            }}
+          >
+            New Folder
+          </Button>
+        </div>
         <UploadButton 
           endpoint="shelfUploader" 
           onClientUploadComplete={() => {

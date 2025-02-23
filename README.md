@@ -56,4 +56,4 @@ Just finished connecting to the database. Next steps:
 ## Note from 2-22-2025
 
 - [x] added folder creation
-- [ ] folder name 
+- [x] folder name change
