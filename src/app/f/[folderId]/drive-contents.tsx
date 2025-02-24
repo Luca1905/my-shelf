@@ -1,7 +1,8 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import { FileRow, FolderRow } from "./file-row";
+import { FileRow } from "../components/FileRow";
+import { FolderRow } from "../components/FolderRow";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
@@ -26,7 +27,10 @@ export default function DriveContents(props: {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href={`/f/${props.parents[0]?.id}`} className="mr-2 text-gray-300 hover:text-white">
+            <Link
+              href={`/f/${props.parents[0]?.id}`}
+              className="mr-2 text-gray-300 hover:text-white"
+            >
               My Drive
             </Link>
             {props.parents.slice(1).map((folder, _) => (
@@ -68,16 +72,16 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <div className="flex gap-2 mt-4">
+        <div className="mt-4 flex gap-2">
           <input
             type="text"
             placeholder="Folder name"
-            className="rounded bg-gray-800 px-3 py-2 text-gray-100 border border-gray-700 focus:outline-none focus:border-gray-500"
+            className="rounded border border-gray-700 bg-gray-800 px-3 py-2 text-gray-100 focus:border-gray-500 focus:outline-none"
             onChange={(e) => setFolderName(e.target.value)}
             value={folderName}
           />
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             onClick={async () => {
               if (folderName.trim()) {
                 await createFolder(props.currentFolderId, folderName);
@@ -91,8 +95,8 @@ export default function DriveContents(props: {
             New Folder
           </Button>
         </div>
-        <UploadButton 
-          endpoint="shelfUploader" 
+        <UploadButton
+          endpoint="shelfUploader"
           onClientUploadComplete={() => {
             navigate.refresh();
           }}

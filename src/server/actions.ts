@@ -64,3 +64,21 @@ export async function createFolder(folderId: number, folderName: string) {
 
   return { success: true };
 }
+
+export async function renameFolder(folderId: number, newName: string) {
+  const session = await auth();
+  if (!session.userId) {
+    return { error: "Unauthorized" };
+  }
+
+  await MUTATIONS.renameFolder({
+    folderId,
+    newName,
+    userId: session.userId,
+  });
+
+  const c = await cookies();
+  c.set("force-refresh", JSON.stringify(Math.random()));
+
+  return { success: true };
+}

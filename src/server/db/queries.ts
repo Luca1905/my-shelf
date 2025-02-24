@@ -91,6 +91,22 @@ export const MUTATIONS = {
     });
   },
 
+  renameFolder: async function (input: {
+    folderId: number;
+    newName: string;
+    userId: string;
+  }) {
+    return await db
+      .update(foldersSchema)
+      .set({ name: input.newName })
+      .where(
+        and(
+          eq(foldersSchema.id, input.folderId),
+          eq(foldersSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
   onboardUser: async function (userId: string) {
     const rootFolder = await db
       .insert(foldersSchema)

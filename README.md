@@ -11,8 +11,8 @@
 - [x] Access control (check owner before rendering f page)
 - [x] make clerk prod ready
 - [x] Add SSR plugin for UT button
-- [ ] Create Folders
-- [ ] Folder rename
+- [x] Create Folders
+- [x] Folder rename
 - [ ] Delete folders
 - [ ] UI indication for file type
 - [ ] File view
@@ -56,4 +56,12 @@ Just finished connecting to the database. Next steps:
 ## Note from 2-22-2025
 
 - [x] added folder creation
+
+## Note from 2-23-2025
+
 - [x] folder name change
+- [x] folder rename ui
+
+## Note from 2-24-2025
+- [x] folder rename backend
+- [x] split file-row file into seperate components
