@@ -1,12 +1,12 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
-import { files_table } from "./db/schema";
+import { and, eq, inArray } from "drizzle-orm";
+import { files_table, folders_table } from "./db/schema";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
 import { UTApi } from "uploadthing/server";
 import { cookies } from "next/headers";
-import { MUTATIONS } from "./db/queries";
+import { MUTATIONS, QUERIES } from "./db/queries";
 
 const utApi = new UTApi();
 
@@ -76,6 +76,73 @@ export async function renameFolder(folderId: number, newName: string) {
     newName,
     userId: session.userId,
   });
+
+  const c = await cookies();
+  c.set("force-refresh", JSON.stringify(Math.random()));
+
+  return { success: true };
+}
+
+export async function deleteFolder(folderId: number) {
+  const session = await auth();
+  if (!session.userId) {  
+    return { error: "Unauthorized" };
+  }
+
+  const folder = await QUERIES.getFolderById(folderId);
+  if (!folder) {
+    return { error: "Folder not found"};
+  }
+  if (folder.ownerId !== session.userId) {
+    return { error: "Unauthorized" };
+  }
+
+  const stk = [folderId];
+  const foldersToDelete = [];
+  const filesToDelete = [];
+
+  while (stk.length > 0) {
+    const currentFolderId = stk.pop()!;
+    foldersToDelete.push(currentFolderId);
+    
+    const [subfolders, files] = await Promise.all([
+      QUERIES.getFolders(currentFolderId),
+      QUERIES.getFiles(currentFolderId)
+    ]);
+
+    const userOwnedSubfolders = subfolders.filter(
+      subfolder => subfolder.ownerId === session.userId
+    );
+    stk.push(...userOwnedSubfolders.map(folder => folder.id));
+    
+    filesToDelete.push(
+      ...files
+        .filter(file => file.ownerId === session.userId)
+        .map(file => file.id)
+    );
+  }
+
+  if (filesToDelete.length > 0) {
+    await db
+      .delete(files_table)
+      .where(
+        and(
+          inArray(files_table.id, filesToDelete),
+          eq(files_table.ownerId, session.userId)
+        )
+      );
+  }
+
+  for (const folderId of foldersToDelete.reverse()) {
+    await db
+      .delete(folders_table)
+      .where(
+        and(
+          eq(folders_table.id, folderId),
+          eq(folders_table.ownerId, session.userId)
+        )
+      );
+  }
 
   const c = await cookies();
   c.set("force-refresh", JSON.stringify(Math.random()));

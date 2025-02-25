@@ -13,7 +13,7 @@
 - [x] Add SSR plugin for UT button
 - [x] Create Folders
 - [x] Folder rename
-- [ ] Delete folders
+- [x] Delete folders
 - [ ] UI indication for file type
 - [ ] File view
 - [ ] File search
@@ -65,3 +65,8 @@ Just finished connecting to the database. Next steps:
 ## Note from 2-24-2025
 - [x] folder rename backend
 - [x] split file-row file into seperate components
+
+## Note from 2-25-2025
+- [x] added folder deletion to backend
+- [ ] added UI indication while deleting for files and folders
+    

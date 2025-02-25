@@ -6,10 +6,11 @@ import {
   PencilIcon,
   XIcon,
   CheckIcon,
+  Trash2Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
-import { renameFolder } from "~/server/actions";
+import { deleteFile, deleteFolder, renameFolder } from "~/server/actions";
 import type { folders_table } from "~/server/db/schema";
 
 export function FolderRow({
@@ -93,6 +94,15 @@ export function FolderRow({
         </div>
         <div className="col-span-2 text-gray-400">{"folder"}</div>
         <div className="col-span-3 text-gray-400"></div>
+        <div className="col-span-1 text-gray-400">
+          <Button
+            variant="ghost"
+            onClick={() => deleteFolder(folder.id)}
+            aria-label="Delete folder"
+          >
+            <Trash2Icon className="h-4 w-4 text-red-500" size={20} />
+          </Button>
+        </div>
       </div>
     </li>
   );
