@@ -45,7 +45,7 @@ export async function deleteFile(fileId: number) {
   return { success: true };
 }
 
-export async function createFolder(folderId: number, folderName: string) {
+export async function createFolder(parentId: number, folderName: string) {
   const session = await auth();
   if (!session.userId) {
     return { error: "Unauthorized" };
@@ -54,7 +54,7 @@ export async function createFolder(folderId: number, folderName: string) {
   await MUTATIONS.createFolder({
     folder: {
       name: folderName,
-      parent: folderId,
+      parent: parentId,
     },
     userId: session.userId,
   });
