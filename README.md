@@ -14,11 +14,11 @@
 - [x] Create Folders
 - [x] Folder rename
 - [x] Delete folders
+- [x] indicate row when deleting 
 - [ ] UI indication for file type
 - [ ] File view
 - [ ] File search
 - [ ] Toast for uploading
-- [ ] indicate row when deleting 
 
 ## Note from 2-10-2025
 
@@ -39,7 +39,7 @@ Just finished connecting to the database. Next steps:
 - [x] Add ownership
 - [x] File upload to right folder
 - [x] Change allowed files
-- [x] make sorting order consistent
+- [x] make sorting order consiste   nt
 - [x] Delete files
 - [x] Homepage
 
@@ -68,5 +68,5 @@ Just finished connecting to the database. Next steps:
 
 ## Note from 2-25-2025
 - [x] added folder deletion to backend
-- [ ] added UI indication while deleting for files and folders
+- [x] added UI indication while deleting for files and folders
     
