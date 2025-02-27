@@ -15,10 +15,10 @@
 - [x] Folder rename
 - [x] Delete folders
 - [x] indicate row when deleting 
-- [ ] UI indication for file type
 - [ ] File view
 - [ ] File search
 - [ ] Toast for uploading
+- [ ] drag 'n drop
 
 ## Note from 2-10-2025
 
@@ -70,3 +70,9 @@ Just finished connecting to the database. Next steps:
 - [x] added folder deletion to backend
 - [x] added UI indication while deleting for files and folders
     
+## Note from 2-27-2025
+- [x] indicate row while deleting
+- [ ] confirm deletion through user
+- [ ] file renames
+- [ ] toast for uploading and deletion
+- [ ] create a unified button for folder creation and file uploading

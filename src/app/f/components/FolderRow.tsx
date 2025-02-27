@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useTransition } from "react";
 import {
   Folder as FolderIcon,
   PencilIcon,
@@ -12,16 +12,20 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { deleteFolder, renameFolder } from "~/server/actions";
 import type { folders_table } from "~/server/db/schema";
+import { LoadingSpinner } from "~/components/ui/loadingSpinner";
 
 export function FolderRow({
   folder,
 }: {
   folder: typeof folders_table.$inferSelect;
 }) {
+  const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [newName, setNewName] = useState(folder.name);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const deleting = isPending || isDeleting;
 
   useEffect(() => {
     if (isEditing) {
@@ -35,12 +39,22 @@ export function FolderRow({
     await renameFolder(folder.id, newName);
   };
 
+  const handleDelete = () => {
+    setIsDeleting(true);
+    startTransition(async () => {
+      await deleteFolder(folder.id);
+      setIsDeleting(false);
+    });
+  };
+
   return (
     <li
       key={folder.id}
-      className="group border-b border-gray-700 px-6 duration-200 hover:bg-gray-700"
+      className={`group border-b border-gray-700 px-6 duration-200 hover:bg-gray-700 ${
+        deleting ? "opacity-50" : ""
+      }`}
     >
-      <div className="grid grid-cols-12 items-center gap-4 py-4">
+      <div className="grid grid-cols-12 items-center gap-4 py-3">
         <div className="col-span-6 flex items-center">
           <div className="flex h-6 w-full items-center gap-2">
             {isEditing ? (
@@ -75,7 +89,7 @@ export function FolderRow({
             ) : (
               <>
                 <Link
-                  href={`/f/${folder.id}`}
+                  href={deleting ? "" : `/f/${folder.id}`}
                   className="flex items-center text-gray-100 hover:text-blue-400"
                 >
                   <FolderIcon className="mr-3" size={20} />
@@ -93,40 +107,17 @@ export function FolderRow({
             )}
           </div>
         </div>
-        <div className="col-span-2 text-gray-400">{"folder"}</div>
+        <div className="col-span-2 text-gray-400">folder</div>
         <div className="col-span-3 text-gray-400"></div>
         <div className="col-span-1 text-gray-400">
           <Button
             variant="ghost"
-            onClick={async () => {
-              setIsDeleting(true);
-              await deleteFolder(folder.id);
-              setIsDeleting(false);
-            }}
-            disabled={isDeleting}
+            onClick={handleDelete}
+            disabled={deleting}
             aria-label="Delete folder"
           >
-            {isDeleting ? (
-              <svg
-                className="h-4 w-4 animate-spin text-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+            {deleting ? (
+              <LoadingSpinner className="text-red-500" />
             ) : (
               <Trash2Icon className="h-4 w-4 text-red-500" size={20} />
             )}
@@ -136,4 +127,3 @@ export function FolderRow({
     </li>
   );
 }
-
