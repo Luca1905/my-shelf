@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { createFolder } from "~/server/actions";
 import { useState } from "react";
+import { useToast } from "~/hooks/use-toast";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -21,6 +22,7 @@ export default function DriveContents(props: {
 }) {
   const navigate = useRouter();
   const [folderName, setFolderName] = useState("");
+  const { toast } = useToast();
 
   return (
     <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
@@ -97,7 +99,13 @@ export default function DriveContents(props: {
         </div>
         <UploadButton
           endpoint="shelfUploader"
-          onClientUploadComplete={() => {
+          onClientUploadComplete={(uploadedFileResponse) => {
+            uploadedFileResponse.forEach((res) =>
+              toast({
+                title: "File uploaded",
+                description: `${res.name} has been uploaded successfully.`,
+              }),
+            );
             navigate.refresh();
           }}
           input={{

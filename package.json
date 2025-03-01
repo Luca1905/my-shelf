@@ -23,6 +23,7 @@
     "@clerk/nextjs": "^6.11.2",
     "@libsql/client": "^0.9.0",
     "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-toast": "^1.2.6",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@uploadthing/react": "^7.1.5",
     "class-variance-authority": "^0.7.1",
