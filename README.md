@@ -72,7 +72,10 @@ Just finished connecting to the database. Next steps:
     
 ## Note from 2-27-2025
 - [x] indicate row while deleting
+
+## Note from 3-1-2025
+- [x] toast for uploading
+- [ ] toast for deletion
 - [ ] confirm deletion through user
 - [ ] file renames
-- [ ] toast for uploading and deletion
 - [ ] create a unified button for folder creation and file uploading
