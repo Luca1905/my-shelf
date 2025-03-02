@@ -15,9 +15,9 @@
 - [x] Folder rename
 - [x] Delete folders
 - [x] indicate row when deleting 
+- [x] Toasts
 - [ ] File view
 - [ ] File search
-- [ ] Toast for uploading
 - [ ] drag 'n drop
 
 ## Note from 2-10-2025
@@ -75,7 +75,9 @@ Just finished connecting to the database. Next steps:
 
 ## Note from 3-1-2025
 - [x] toast for uploading
-- [ ] toast for deletion
 - [ ] confirm deletion through user
 - [ ] file renames
 - [ ] create a unified button for folder creation and file uploading
+
+## Note from 3-2-2025
+- [x] toast for deletion
