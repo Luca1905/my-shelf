@@ -13,6 +13,7 @@ import { Button } from "~/components/ui/button";
 import { deleteFolder, renameFolder } from "~/server/actions";
 import type { folders_table } from "~/server/db/schema";
 import { LoadingSpinner } from "~/components/ui/loadingSpinner";
+import { useToast } from "~/hooks/use-toast";
 
 export function FolderRow({
   folder,
@@ -24,6 +25,7 @@ export function FolderRow({
   const [isDeleting, setIsDeleting] = useState(false);
   const [newName, setNewName] = useState(folder.name);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const deleting = isPending || isDeleting;
 
@@ -44,6 +46,11 @@ export function FolderRow({
     startTransition(async () => {
       await deleteFolder(folder.id);
       setIsDeleting(false);
+      toast({
+        title: "Folder permanently deleted",
+        description: `The folder "${folder.name}" and all files within it have been permanently removed.`,
+        variant: "destructive"
+      });
     });
   };
 

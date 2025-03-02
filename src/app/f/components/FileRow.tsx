@@ -6,17 +6,24 @@ import { deleteFile } from "~/server/actions";
 import type { files_table } from "~/server/db/schema";
 import { useState, useTransition } from "react";
 import { LoadingSpinner } from "~/components/ui/loadingSpinner";
+import { useToast } from "~/hooks/use-toast";
 
 export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
   const deleting = isPending || isDeleting;
+  const { toast } = useToast();
 
   const handleDelete = () => {
     setIsDeleting(true);
     startTransition(async () => {
       await deleteFile(file.id);
       setIsDeleting(false);
+      toast({
+        title: "File deleted",
+        description: `${file.name} has been deleted successfully.`,
+        className: "text-red-500",
+      });
     });
   };
 

@@ -89,6 +89,10 @@ export default function DriveContents(props: {
                 await createFolder(props.currentFolderId, folderName);
                 setFolderName("");
                 navigate.refresh();
+                toast({
+                  title: "Folder created",
+                  description: `${folderName} has been created successfully.`
+                })
               } else {
                 setFolderName("Folder name is required");
               }
