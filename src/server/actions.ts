@@ -45,6 +45,26 @@ export async function deleteFile(fileId: number) {
   return { success: true };
 }
 
+export async function renameFile(fileId: number, newName: string) {
+  const session = await auth();
+  if (!session.userId) {
+    return { error: "Unauthorized" };
+  }
+
+  const dbRenameResult = await MUTATIONS.renameFile({
+    fileId: fileId,
+    newName: newName,
+    userId: session.userId,
+  })
+
+  console.log(dbRenameResult);
+
+  const c = await cookies();
+  c.set("force-refresh", JSON.stringify(Math.random()));
+
+  return { success: true };
+}
+
 export async function createFolder(parentId: number, folderName: string) {
   const session = await auth();
   if (!session.userId) {
@@ -104,21 +124,21 @@ export async function deleteFolder(folderId: number) {
   while (stk.length > 0) {
     const currentFolderId = stk.pop()!;
     foldersToDelete.push(currentFolderId);
-    
+
     const [subfolders, files] = await Promise.all([
       QUERIES.getFolders(currentFolderId),
-      QUERIES.getFiles(currentFolderId)
+      QUERIES.getFiles(currentFolderId),
     ]);
 
     const userOwnedSubfolders = subfolders.filter(
-      subfolder => subfolder.ownerId === session.userId
+      (subfolder) => subfolder.ownerId === session.userId,
     );
-    stk.push(...userOwnedSubfolders.map(folder => folder.id));
-    
+    stk.push(...userOwnedSubfolders.map((folder) => folder.id));
+
     filesToDelete.push(
       ...files
-        .filter(file => file.ownerId === session.userId)
-        .map(file => file.id)
+        .filter((file) => file.ownerId === session.userId)
+        .map((file) => file.id),
     );
   }
 
@@ -128,8 +148,8 @@ export async function deleteFolder(folderId: number) {
       .where(
         and(
           inArray(files_table.id, filesToDelete),
-          eq(files_table.ownerId, session.userId)
-        )
+          eq(files_table.ownerId, session.userId),
+        ),
       );
   }
 
@@ -139,8 +159,8 @@ export async function deleteFolder(folderId: number) {
       .where(
         and(
           eq(folders_table.id, folderId),
-          eq(folders_table.ownerId, session.userId)
-        )
+          eq(folders_table.ownerId, session.userId),
+        ),
       );
   }
 

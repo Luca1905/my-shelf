@@ -19,6 +19,7 @@
 - [ ] File view
 - [ ] File search
 - [ ] drag 'n drop
+- [ ] shared Documentsa
 
 ## Note from 2-10-2025
 
@@ -75,9 +76,12 @@ Just finished connecting to the database. Next steps:
 
 ## Note from 3-1-2025
 - [x] toast for uploading
-- [ ] confirm deletion through user
-- [ ] file renames
-- [ ] create a unified button for folder creation and file uploading
 
 ## Note from 3-2-2025
 - [x] toast for deletion
+
+## Note from 3-4-2025
+- [x] confirm deletion through user
+- [x] file renames
+- [ ] suspense on login/f page/ get started page/ etc. 
+- [ ] create a unified button for folder creation and file uploading

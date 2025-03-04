@@ -78,6 +78,22 @@ export const MUTATIONS = {
     });
   },
 
+  renameFile: async function (input: {
+    fileId: number;
+    newName: string;
+    userId: string;
+  }) {
+    return await db
+      .update(filesSchema)
+      .set({ name: input.newName })
+      .where(
+        and(
+          eq(filesSchema.id, input.fileId),
+          eq(filesSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
   createFolder: async function (input: {
     folder: {
       name: string;

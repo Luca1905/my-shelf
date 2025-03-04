@@ -1,10 +1,10 @@
 "use client";
 
-import { FileIcon, Trash2Icon } from "lucide-react";
+import { CheckIcon, FileIcon, PencilIcon, Trash2Icon, XIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
-import { deleteFile } from "~/server/actions";
+import { deleteFile, renameFile } from "~/server/actions";
 import type { files_table } from "~/server/db/schema";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useRef, useTransition } from "react";
 import { LoadingSpinner } from "~/components/ui/loadingSpinner";
 import { useToast } from "~/hooks/use-toast";
 import {
@@ -16,12 +16,28 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 
+
 export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
   const [isPending, startTransition] = useTransition();
+  const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const deleting = isPending || isDeleting;
+  const [newName, setNewName] = useState(file.name);
+  const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const deleting = isPending || isDeleting;
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+
+      const lastDotIndex = file.name.lastIndexOf('.');
+      const nameWithoutExt = lastDotIndex > 0 ? lastDotIndex : file.name.length;
+      
+      inputRef.current.setSelectionRange(0, nameWithoutExt);
+    }
+  }, [isEditing, file])
 
   const handleDelete = () => {
     setIsDeleting(true);
@@ -36,6 +52,11 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
     });
   };
 
+  const handleRename = async () => {
+    setIsEditing(false);
+    await renameFile(file.id, newName);
+  };
+
   return (
     <>
       <li
@@ -46,15 +67,56 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
       >
         <div className="grid grid-cols-12 items-center gap-4 py-3">
           <div className="col-span-6 flex items-center">
-            <a
-              href={deleting ? "" : file.url}
-              className="flex items-center text-gray-100 hover:text-blue-400"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FileIcon className="mr-3" size={20} />
-              {file.name}
-            </a>
+            {isEditing ? (
+              <>
+                <form
+                  className="flex w-full items-center"
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    await handleRename();
+                  }}
+                >
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    className="w-full bg-transparent text-gray-100 focus:outline-none"
+                    onBlur={handleRename}
+                  />
+                </form>
+                <Button variant="ghost" onClick={handleRename}>
+                  <CheckIcon className="text-green-500" size={16} />
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => setIsEditing(false)}
+                  aria-label="Cancel"
+                >
+                  <XIcon className="text-red-500" size={16} />
+                </Button>
+              </>
+            ) : (
+              <>
+                <a
+                  href={deleting ? "" : file.url}
+                  className="flex items-center text-gray-100 hover:text-blue-400"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FileIcon className="mr-3" size={20} />
+                  {file.name}
+                </a>
+                <Button
+                  variant="ghost"
+                  onClick={() => setIsEditing(true)}
+                  aria-label="Edit file name"
+                  className="hidden rounded p-2 hover:bg-gray-600 group-hover:block"
+                >
+                  <PencilIcon className="text-gray-400" size={16} />
+                </Button>
+              </>
+            )}
           </div>
           <div className="col-span-2 text-gray-400">file</div>
           <div className="col-span-3 text-gray-400">{file.size}</div>
@@ -80,7 +142,8 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete &ldquo;{file.name}&rdquo;? This action cannot be undone.
+              Are you sure you want to delete &ldquo;{file.name}&rdquo;? This
+              action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
