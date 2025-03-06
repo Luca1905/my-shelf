@@ -1,48 +1,22 @@
-import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
-import { mockFolders } from "~/lib/mock-data";
-import { db } from "~/server/db";
-import { folders_table } from "~/server/db/schema";
+"use client";
 
-export default async function Sandbox() {
-  const user = await auth();
-  if (!user.userId) {
-    throw new Error("User not found");
-  }
+import { useState } from "react";
+import { formatFileSize } from "~/lib/utils";
 
-  const folders = await db
-    .select()
-    .from(folders_table)
-    .where(eq(folders_table.ownerId, user.userId));
-
-  console.log(folders);
+export default function Sandbox() {
+  const [num, setNum] = useState("");
 
   return (
     <div>
-      <form
-        action={async () => {
-        "use server";
-        const user = await auth();
-        if (!user.userId) {
-          throw new Error("User not found");
-        }
-
-        const rootFolder = await db.insert(folders_table).values({
-          name: "root",
-          ownerId: user.userId,
-          parent: null,
-        }).$returningId();
-
-        const insertableFolders = mockFolders.map((folder) => ({
-          name: folder.name,
-          ownerId: user.userId,
-          parent: rootFolder[0]!.id,
-        }));
-        await db.insert(folders_table).values(insertableFolders);
-      }}
-    >
-      <button type="submit">Create</button>
-    </form>
-  </div>
-  )
+      <input
+        type="text"
+        value={num}
+        onChange={(e) => {
+          setNum(e.target.value);
+        }}
+        className="text-black bg-white"
+      />
+      <p>{formatFileSize(Number(num))}</p>
+    </div>
+  );
 }

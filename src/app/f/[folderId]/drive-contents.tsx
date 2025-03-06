@@ -5,8 +5,8 @@ import {
   Plus as PlusIcon,
   Upload as UploadIcon,
 } from "lucide-react";
-import { FileRow } from "../components/FileRow";
-import { FolderRow } from "../components/FolderRow";
+import { FileRow } from "../../../components/ui/FileRow";
+import { FolderRow } from "../../../components/ui/FolderRow";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { UploadButton } from "~/utils/uploadthing";

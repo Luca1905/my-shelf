@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
+import { formatFileSize } from "~/lib/utils";
 
 
 export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
@@ -119,7 +120,7 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
             )}
           </div>
           <div className="col-span-2 text-gray-400">file</div>
-          <div className="col-span-3 text-gray-400">{file.size}</div>
+          <div className="col-span-3 text-gray-400">{formatFileSize(file.size)}</div>
           <div className="col-span-1 text-gray-400">
             <Button
               variant="ghost"
