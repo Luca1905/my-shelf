@@ -11,7 +11,6 @@ import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
-import { Button } from "~/components/ui/button";
 import { createFolder } from "~/server/actions";
 import { useToast } from "~/hooks/use-toast";
 export default function DriveContents(props: {
@@ -56,8 +55,8 @@ export default function DriveContents(props: {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-2" onClick={handleCreateNew}>
-            <div className="flex items-center justify-center gap-1 rounded-md">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-1 rounded-md" onClick={handleCreateNew}>
               <label
                 className="group relative flex h-10 w-36 cursor-pointer items-center justify-center rounded-md text-gray-600 bg-white focus-within:ring-2"
               >
