@@ -1,18 +1,19 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import {
+  ChevronRight,
+  Plus as PlusIcon,
+  Upload as UploadIcon,
+} from "lucide-react";
 import { FileRow } from "../components/FileRow";
 import { FolderRow } from "../components/FolderRow";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import { createFolder } from "~/server/actions";
-import { useState } from "react";
 import { useToast } from "~/hooks/use-toast";
-
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
   folders: (typeof folders_table.$inferSelect)[];
@@ -21,8 +22,16 @@ export default function DriveContents(props: {
   currentFolderId: number;
 }) {
   const navigate = useRouter();
-  const [folderName, setFolderName] = useState("");
   const { toast } = useToast();
+
+  const handleCreateNew = async () => {
+    await createFolder(props.currentFolderId, "New Folder");
+    navigate.refresh();
+    toast({
+      title: "New Folder created",
+      description: "A new folder has been created successfully.",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 p-8 text-gray-100">
@@ -47,13 +56,46 @@ export default function DriveContents(props: {
               </div>
             ))}
           </div>
-          <div>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+          <div className="flex items-center gap-2" onClick={handleCreateNew}>
+            <div className="flex items-center justify-center gap-1 rounded-md">
+              <label
+                className="group relative flex h-10 w-36 cursor-pointer items-center justify-center rounded-md text-gray-600 bg-white focus-within:ring-2"
+              >
+                <div className="flex items-center">
+                  <PlusIcon className="mr-2 h-4 w-4" />
+                  New
+                </div>
+              </label>
+            </div>
+            <UploadButton
+              endpoint="shelfUploader"
+              appearance={{
+                button:
+                  "ut-ready:bg-blue-500 ut-uploading:cursor-not-allowed bg-blue-500 text-white h-10 px-4 rounded-md flex items-center",
+                container: "flex-row rounded-md",
+                allowedContent: "hidden",
+              }}
+              onClientUploadComplete={(uploadedFileResponse) => {
+                uploadedFileResponse.forEach((res) =>
+                  toast({
+                    title: "File uploaded",
+                    description: `${res.name} has been uploaded successfully.`,
+                  }),
+                );
+                navigate.refresh();
+              }}
+              input={{
+                folderId: props.currentFolderId,
+              }}
+              content={{
+                button: () => (
+                  <div className="flex items-center">
+                    <UploadIcon className="mr-2 h-4 w-4" />
+                    Upload
+                  </div>
+                ),
+              }}
+            />
           </div>
         </div>
         <div className="rounded-lg bg-gray-800 shadow-xl">
@@ -74,48 +116,6 @@ export default function DriveContents(props: {
             ))}
           </ul>
         </div>
-        <div className="mt-4 flex gap-2">
-          <input
-            type="text"
-            placeholder="Folder name"
-            className="rounded border border-gray-700 bg-gray-800 px-3 py-2 text-gray-100 focus:border-gray-500 focus:outline-none"
-            onChange={(e) => setFolderName(e.target.value)}
-            value={folderName}
-          />
-          <Button
-            variant="outline"
-            onClick={async () => {
-              if (folderName.trim()) {
-                await createFolder(props.currentFolderId, folderName);
-                setFolderName("");
-                navigate.refresh();
-                toast({
-                  title: "Folder created",
-                  description: `${folderName} has been created successfully.`
-                })
-              } else {
-                setFolderName("Folder name is required");
-              }
-            }}
-          >
-            New Folder
-          </Button>
-        </div>
-        <UploadButton
-          endpoint="shelfUploader"
-          onClientUploadComplete={(uploadedFileResponse) => {
-            uploadedFileResponse.forEach((res) =>
-              toast({
-                title: "File uploaded",
-                description: `${res.name} has been uploaded successfully.`,
-              }),
-            );
-            navigate.refresh();
-          }}
-          input={{
-            folderId: props.currentFolderId,
-          }}
-        />
       </div>
     </div>
   );

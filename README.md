@@ -84,4 +84,9 @@ Just finished connecting to the database. Next steps:
 - [x] confirm deletion through user
 - [x] file renames
 - [ ] suspense on login/f page/ get started page/ etc. 
-- [ ] create a unified button for folder creation and file uploading
+
+## Note from 3-6-2025
+- [x] create better layout and buttons for f page
+- [x] fix ui for upload button
+- [ ] readying logic for upload button
+
