@@ -1,9 +1,23 @@
-import { auth } from "@clerk/nextjs/server";
+"use client";
+
+import { useUser } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 
 export default function Home() {
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (isSignedIn) {
+      router.push("/shelf");
+    } else {
+      router.push("/sign-in");
+    }
+  };
+
   return (
     <>
       <div className="space-y-8">
@@ -16,18 +30,7 @@ export default function Home() {
         </p>
       </div>
       <div>
-        <form
-          action={async () => {
-            "use server";
-
-            const session = await auth();
-            if (!session.userId) {
-              return redirect("/sign-in");
-            }
-
-            return redirect("/shelf");
-          }}
-        >
+        <form onSubmit={handleFormSubmit}>
           <Button
             type="submit"
             size="lg"

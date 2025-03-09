@@ -83,10 +83,11 @@ Just finished connecting to the database. Next steps:
 ## Note from 3-4-2025
 - [x] confirm deletion through user
 - [x] file renames
-- [ ] suspense on login/f page/ get started page/ etc. 
 
 ## Note from 3-6-2025
 - [x] create better layout and buttons for f page
 - [x] fix ui for upload button
 - [ ] readying logic for upload button
 
+## Note from 3-9-2025
+- [ ] suspense on login/f page/ get started page/ etc. 
