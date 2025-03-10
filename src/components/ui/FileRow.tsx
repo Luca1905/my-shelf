@@ -62,7 +62,7 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
     <>
       <li
         key={file.id}
-        className={`group border-b border-gray-700 px-6 duration-200 hover:bg-gray-700 ${
+        className={`group border-b border-gray-700 px-6 hover:bg-gray-700 ${
           deleting ? "opacity-50" : ""
         }`}
       >

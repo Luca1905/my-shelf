@@ -42,7 +42,8 @@ export default function RootLayout({
       <html lang="en" className="dark" suppressHydrationWarning>
         <head />
         <body
-          className={`${inter.className} min-h-screen bg-background font-sans text-foreground antialiased`}
+          className={`${inter.className} bg-background text-foreground antialiased`}
+          style={{ overflow: 'hidden' }}
         >
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <PostHogProvider>{children}</PostHogProvider>

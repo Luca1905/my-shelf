@@ -13,6 +13,7 @@ import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { createFolder } from "~/server/actions";
 import { useToast } from "~/hooks/use-toast";
+
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
   folders: (typeof folders_table.$inferSelect)[];
@@ -98,7 +99,7 @@ export default function DriveContents(props: {
           </div>
         </div>
         <div className="rounded-lg bg-gray-800 shadow-xl">
-          <div className="border-b border-gray-700 px-6 py-4">
+          <div className="border-b border-gray-700 px-6 py-4 sticky top-0 bg-gray-800 z-10">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
               <div className="col-span-6">Name</div>
               <div className="col-span-2">Type</div>
@@ -106,7 +107,7 @@ export default function DriveContents(props: {
               <div className="col-span-1"></div>
             </div>
           </div>
-          <ul>
+          <ul className="scrollbar scrollbar-thumb-sky-700 max-h-[calc(100vh-215px)] overflow-y-auto">
             {props.folders.map((folder) => (
               <FolderRow key={folder.id} folder={folder} />
             ))}

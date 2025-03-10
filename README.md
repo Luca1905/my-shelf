@@ -19,7 +19,9 @@
 - [ ] File view
 - [ ] File search
 - [ ] drag 'n drop
-- [ ] shared Documentsa
+- [ ] shared Documents
+- [ ] select rows
+- [ ] download files
 
 ## Note from 2-10-2025
 
