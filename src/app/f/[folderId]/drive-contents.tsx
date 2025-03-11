@@ -4,15 +4,16 @@ import {
   ChevronRight,
   Plus as PlusIcon,
   Upload as UploadIcon,
+  Folder as FolderIcon,
 } from "lucide-react";
-import { FileRow } from "../../../components/ui/FileRow";
-import { FolderRow } from "../../../components/ui/FolderRow";
+import { FileRow } from "./_components/FileRow";
+import { FolderRow } from "./_components/FolderRow";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
 import { UploadButton } from "~/utils/uploadthing";
 import { useRouter } from "next/navigation";
 import { createFolder } from "~/server/actions";
-import { useToast } from "~/hooks/use-toast";
+import { toast } from "sonner";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -22,14 +23,13 @@ export default function DriveContents(props: {
   currentFolderId: number;
 }) {
   const navigate = useRouter();
-  const { toast } = useToast();
-
   const handleCreateNew = async () => {
     await createFolder(props.currentFolderId, "New Folder");
     navigate.refresh();
-    toast({
-      title: "New Folder created",
-      description: "A new folder has been created successfully.",
+    toast('New Folder Created', {
+      description: 'Succesfully created a new folder',
+      duration: 5000,
+      icon: <FolderIcon size={20}/>,
     });
   };
 
@@ -77,10 +77,7 @@ export default function DriveContents(props: {
               }}
               onClientUploadComplete={(uploadedFileResponse) => {
                 uploadedFileResponse.forEach((res) =>
-                  toast({
-                    title: "File uploaded",
-                    description: `${res.name} has been uploaded successfully.`,
-                  }),
+                  toast.success(`${res.name} has been uploaded`),
                 );
                 navigate.refresh();
               }}

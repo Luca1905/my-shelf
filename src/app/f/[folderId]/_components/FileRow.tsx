@@ -1,12 +1,18 @@
 "use client";
 
-import { CheckIcon, FileIcon, PencilIcon, Trash2Icon, XIcon } from "lucide-react";
+import {
+  CheckIcon,
+  FileIcon,
+  PencilIcon,
+  Trash2Icon,
+  XIcon,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { deleteFile, renameFile } from "~/server/actions";
 import type { files_table } from "~/server/db/schema";
 import { useEffect, useState, useRef, useTransition } from "react";
 import { LoadingSpinner } from "~/components/ui/loadingSpinner";
-import { useToast } from "~/hooks/use-toast";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -17,7 +23,6 @@ import {
 } from "~/components/ui/dialog";
 import { formatFileSize } from "~/lib/utils";
 
-
 export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
@@ -25,7 +30,6 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [newName, setNewName] = useState(file.name);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const deleting = isPending || isDeleting;
 
@@ -33,29 +37,38 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
 
-      const lastDotIndex = file.name.lastIndexOf('.');
+      const lastDotIndex = file.name.lastIndexOf(".");
       const nameWithoutExt = lastDotIndex > 0 ? lastDotIndex : file.name.length;
-      
+
       inputRef.current.setSelectionRange(0, nameWithoutExt);
     }
-  }, [isEditing, file])
+  }, [isEditing, file]);
 
   const handleDelete = () => {
     setIsDeleting(true);
     startTransition(async () => {
-      await deleteFile(file.id);
-      setIsDeleting(false);
-      toast({
-        title: "File deleted",
-        description: `${file.name} has been deleted successfully.`,
-        className: "text-red-500",
+      const myPromise = new Promise<{ name: string }>((resolve, reject) => {
+        deleteFile(file.id)
+          .then(() => resolve({ name: file.name }))
+          .catch(reject);
       });
+
+      toast.promise(myPromise, {
+        loading: "Deleting...",
+        success: (data: { name: string }) => {
+          return `${data.name} has been deleted`;
+        },
+        error: "Error",
+      });
+      setIsDeleting(false);
     });
   };
 
   const handleRename = async () => {
+    const oldName = file.name;
     setIsEditing(false);
     await renameFile(file.id, newName);
+    toast.success(`"${oldName}" renamed to "${newName}"`);
   };
 
   return (
@@ -112,7 +125,7 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
                   variant="ghost"
                   onClick={() => setIsEditing(true)}
                   aria-label="Edit file name"
-                  className="hidden rounded p-2 hover:bg-gray-600 group-hover:block"
+                  className="hidden rounded p-2 group-hover:block hover:bg-gray-600"
                 >
                   <PencilIcon className="text-gray-400" size={16} />
                 </Button>
@@ -120,7 +133,9 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
             )}
           </div>
           <div className="col-span-2 text-gray-400">file</div>
-          <div className="col-span-3 text-gray-400">{formatFileSize(file.size)}</div>
+          <div className="col-span-3 text-gray-400">
+            {formatFileSize(file.size)}
+          </div>
           <div className="col-span-1 text-gray-400">
             <Button
               variant="ghost"

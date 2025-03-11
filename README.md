@@ -4,7 +4,7 @@
 - [ ] custom upload button (https://gist.github.com/t3dotgg/0464ca78e94acce80ba04ca29f800028)
 - [ ] update toasts for uploading status
 - [ ] readying logic for upload button
-- [ ] suspense on login/f page/ get started page/ etc. 
+- [ ] uploading state for upload button
 
 
 ## Planned
@@ -14,3 +14,4 @@
 - [ ] shared Documents
 - [ ] select rows
 - [ ] download files
+- [ ] trash

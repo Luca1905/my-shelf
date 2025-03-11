@@ -13,7 +13,6 @@ import { Button } from "~/components/ui/button";
 import { deleteFolder, renameFolder } from "~/server/actions";
 import type { folders_table } from "~/server/db/schema";
 import { LoadingSpinner } from "~/components/ui/loadingSpinner";
-import { useToast } from "~/hooks/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -22,6 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "~/components/ui/dialog";
+import { toast } from "sonner";
 
 export function FolderRow({
   folder,
@@ -34,7 +34,6 @@ export function FolderRow({
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [newName, setNewName] = useState(folder.name);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
 
   const deleting = isPending || isDeleting;
 
@@ -46,20 +45,28 @@ export function FolderRow({
   }, [isEditing]);
 
   const handleRename = async () => {
+    const oldName = folder.name;
     setIsEditing(false);
     await renameFolder(folder.id, newName);
+    toast.success(`"${oldName}" renamed to "${newName}"`);
   };
 
   const handleDelete = () => {
-    setIsDeleting(true);
-    startTransition(async () => {
-      await deleteFolder(folder.id);
-      setIsDeleting(false);
-      toast({
-        title: "Folder permanently deleted",
-        description: `The folder "${folder.name}" and all files within it have been permanently removed.`,
-        variant: "destructive"
+    startTransition(() => {
+      const myPromise = new Promise<{ name: string }>((resolve, reject) => {
+        deleteFolder(folder.id)
+          .then(() => resolve({ name: folder.name }))
+          .catch(reject);
       });
+
+      toast.promise(myPromise, {
+        loading: "Deleting...",
+        success: (data: { name: string }) => {
+          return `"${data.name}" has been deleted`;
+        },
+        error: "Error",
+      });
+      setIsDeleting(false);
     });
   };
 
@@ -116,7 +123,7 @@ export function FolderRow({
                     variant="ghost"
                     onClick={() => setIsEditing(true)}
                     aria-label="Edit folder"
-                    className="hidden rounded p-2 hover:bg-gray-600 group-hover:block"
+                    className="hidden rounded p-2 group-hover:block hover:bg-gray-600"
                   >
                     <PencilIcon className="text-gray-400" size={16} />
                   </Button>
@@ -148,8 +155,9 @@ export function FolderRow({
           <DialogHeader>
             <DialogTitle>Confirm Folder Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete folder &ldquo;{folder.name}&rdquo;? This will permanently delete the folder and all files within it. 
-              This action cannot be undone.
+              Are you sure you want to delete folder &ldquo;{folder.name}
+              &rdquo;? This will permanently delete the folder and all files
+              within it. This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">

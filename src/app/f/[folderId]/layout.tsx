@@ -1,7 +1,8 @@
 import "~/styles/globals.css";
 import type React from "react";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { Toaster } from "~/components/ui/toaster";
+import { Toaster } from "~/components/ui/sonner";
+import { LoadingSpinner } from "~/components/ui/loadingSpinner";
 
 export default function FolderLayout({
   children,
@@ -28,7 +29,13 @@ export default function FolderLayout({
         </div>
       </header>
       <main className="flex-1">{children}</main>
-      <Toaster />
+      <Toaster
+        icons={{
+          loading: <LoadingSpinner />,
+        }}
+        visibleToasts={5}
+        richColors
+      />
     </div>
   );
 }
