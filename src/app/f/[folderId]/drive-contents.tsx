@@ -26,10 +26,10 @@ export default function DriveContents(props: {
   const handleCreateNew = async () => {
     await createFolder(props.currentFolderId, "New Folder");
     navigate.refresh();
-    toast('New Folder Created', {
-      description: 'Succesfully created a new folder',
+    toast("New Folder Created", {
+      description: "Succesfully created a new folder",
       duration: 5000,
-      icon: <FolderIcon size={20}/>,
+      icon: <FolderIcon size={20} />,
     });
   };
 
@@ -57,10 +57,11 @@ export default function DriveContents(props: {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center gap-1 rounded-md" onClick={handleCreateNew}>
-              <label
-                className="group relative flex h-10 w-36 cursor-pointer items-center justify-center rounded-md text-gray-600 bg-white focus-within:ring-2"
-              >
+            <div
+              className="flex items-center justify-center gap-1 rounded-md"
+              onClick={handleCreateNew}
+            >
+              <label className="group relative flex h-10 w-36 cursor-pointer items-center justify-center rounded-md bg-white text-gray-600 focus-within:ring-2">
                 <div className="flex items-center">
                   <PlusIcon className="mr-2 h-4 w-4" />
                   New
@@ -76,10 +77,10 @@ export default function DriveContents(props: {
                 allowedContent: "hidden",
               }}
               onClientUploadComplete={(uploadedFileResponse) => {
+                navigate.refresh();
                 uploadedFileResponse.forEach((res) =>
                   toast.success(`${res.name} has been uploaded`),
                 );
-                navigate.refresh();
               }}
               input={{
                 folderId: props.currentFolderId,
@@ -96,7 +97,7 @@ export default function DriveContents(props: {
           </div>
         </div>
         <div className="rounded-lg bg-gray-800 shadow-xl">
-          <div className="border-b border-gray-700 px-6 py-4 sticky top-0 bg-gray-800 z-10">
+          <div className="sticky top-0 z-10 border-b border-gray-700 bg-gray-800 px-6 py-4">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
               <div className="col-span-6">Name</div>
               <div className="col-span-2">Type</div>
@@ -104,7 +105,7 @@ export default function DriveContents(props: {
               <div className="col-span-1"></div>
             </div>
           </div>
-          <ul className="scrollbar scrollbar-thumb-sky-700 max-h-[calc(100vh-215px)] overflow-y-auto">
+          <ul className="max-h-[calc(100vh-215px)] overflow-y-auto scrollbar scrollbar-thumb-sky-700">
             {props.folders.map((folder) => (
               <FolderRow key={folder.id} folder={folder} />
             ))}
