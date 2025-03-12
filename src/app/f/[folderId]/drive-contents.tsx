@@ -3,17 +3,17 @@
 import {
   ChevronRight,
   Plus as PlusIcon,
-  Upload as UploadIcon,
   Folder as FolderIcon,
 } from "lucide-react";
 import { FileRow } from "./_components/FileRow";
 import { FolderRow } from "./_components/FolderRow";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
-import { UploadButton } from "~/utils/uploadthing";
+import { SimpleUploadButton } from "./_components/upload-button";
 import { useRouter } from "next/navigation";
 import { createFolder } from "~/server/actions";
 import { toast } from "sonner";
+import { NewButton } from "./_components/new-button";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -57,43 +57,8 @@ export default function DriveContents(props: {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <div
-              className="flex items-center justify-center gap-1 rounded-md"
-              onClick={handleCreateNew}
-            >
-              <label className="group relative flex h-10 w-36 cursor-pointer items-center justify-center rounded-md bg-white text-gray-600 focus-within:ring-2">
-                <div className="flex items-center">
-                  <PlusIcon className="mr-2 h-4 w-4" />
-                  New
-                </div>
-              </label>
-            </div>
-            <UploadButton
-              endpoint="shelfUploader"
-              appearance={{
-                button:
-                  "ut-ready:bg-blue-500 ut-uploading:cursor-not-allowed bg-blue-500 text-white h-10 px-4 rounded-md flex items-center",
-                container: "flex-row rounded-md",
-                allowedContent: "hidden",
-              }}
-              onClientUploadComplete={(uploadedFileResponse) => {
-                navigate.refresh();
-                uploadedFileResponse.forEach((res) =>
-                  toast.success(`${res.name} has been uploaded`),
-                );
-              }}
-              input={{
-                folderId: props.currentFolderId,
-              }}
-              content={{
-                button: () => (
-                  <div className="flex items-center">
-                    <UploadIcon className="mr-2 h-4 w-4" />
-                    Upload
-                  </div>
-                ),
-              }}
-            />
+            <NewButton handleCreateNew={handleCreateNew} />
+            <SimpleUploadButton folderId={props.currentFolderId} />
           </div>
         </div>
         <div className="rounded-lg bg-gray-800 shadow-xl">
