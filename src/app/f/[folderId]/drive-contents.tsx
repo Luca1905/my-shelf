@@ -2,7 +2,6 @@
 
 import {
   ChevronRight,
-  Plus as PlusIcon,
   Folder as FolderIcon,
 } from "lucide-react";
 import { FileRow } from "./_components/FileRow";
