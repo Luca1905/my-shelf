@@ -3,6 +3,7 @@
 import {
   ChevronRight,
   Folder as FolderIcon,
+  Trash2 as TrashIcon,
 } from "lucide-react";
 import { FileRow } from "./_components/FileRow";
 import { FolderRow } from "./_components/FolderRow";
@@ -55,9 +56,18 @@ export default function DriveContents(props: {
               </div>
             ))}
           </div>
-          <div className="flex items-center gap-2">
-            <NewButton handleCreateNew={handleCreateNew} />
-            <SimpleUploadButton folderId={props.currentFolderId} />
+          <div className="flex items-center gap-4">
+            <Link
+              href={`/f/${props.currentFolderId}/trash`}
+              className="flex items-center text-gray-300 hover:text-white"
+            >
+              <TrashIcon className="mr-2 h-4 w-4" />
+              Trash
+            </Link>
+            <div className="flex items-center gap-2">
+              <NewButton handleCreateNew={handleCreateNew} />
+              <SimpleUploadButton folderId={props.currentFolderId} />
+            </div>
           </div>
         </div>
         <div className="rounded-lg bg-gray-800 shadow-xl">

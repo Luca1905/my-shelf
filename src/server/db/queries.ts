@@ -31,7 +31,10 @@ export const QUERIES = {
     return db
       .select()
       .from(filesSchema)
-      .where(eq(filesSchema.parent, folderId))
+      .where(and(
+        eq(filesSchema.parent, folderId),
+        eq(filesSchema.trashed, 0)
+      ))
       .orderBy(filesSchema.id);
   },
 
@@ -39,7 +42,10 @@ export const QUERIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.parent, folderId))
+      .where(and(
+        eq(foldersSchema.parent, folderId),
+        eq(foldersSchema.trashed, 0)
+      ))
       .orderBy(foldersSchema.id);
   },
 
@@ -60,6 +66,50 @@ export const QUERIES = {
       );
     return folder[0];
   },
+
+  getTrashedFiles: function (userId: string) {
+    return db
+      .select()
+      .from(filesSchema)
+      .where(
+        and(
+          eq(filesSchema.ownerId, userId),
+          eq(filesSchema.trashed, 1)
+        )
+      )
+      .orderBy(filesSchema.id);
+  },
+
+  getTrashedFolders: function (userId: string) {
+    return db
+      .select()
+      .from(foldersSchema)
+      .where(
+        and(
+          eq(foldersSchema.ownerId, userId),
+          eq(foldersSchema.trashed, 1)
+        )
+      )
+      .orderBy(foldersSchema.id);
+  },
+
+  getTrashFolderForUser: async function (userId: string) {
+    const rootFolder = await QUERIES.getRootFolderForUser(userId);
+    if (!rootFolder) return null;
+    
+    const trashFolder = await db
+      .select()
+      .from(foldersSchema)
+      .where(
+        and(
+          eq(foldersSchema.ownerId, userId),
+          eq(foldersSchema.parent, rootFolder.id),
+          eq(foldersSchema.name, "Trash")
+        )
+      );
+    
+    return trashFolder[0];
+  }
 };
 
 export const MUTATIONS = {
@@ -115,6 +165,66 @@ export const MUTATIONS = {
     return await db
       .update(foldersSchema)
       .set({ name: input.newName })
+      .where(
+        and(
+          eq(foldersSchema.id, input.folderId),
+          eq(foldersSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
+  moveFileToTrash: async function(input: {
+    fileId: number;
+    userId: string;
+  }) {
+    return await db
+      .update(filesSchema)
+      .set({ trashed: 1 })
+      .where(
+        and(
+          eq(filesSchema.id, input.fileId),
+          eq(filesSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
+  moveFolderToTrash: async function(input: {
+    folderId: number;
+    userId: string;
+  }) {
+    return await db
+      .update(foldersSchema)
+      .set({ trashed: 1 })
+      .where(
+        and(
+          eq(foldersSchema.id, input.folderId),
+          eq(foldersSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
+  restoreFileFromTrash: async function(input: {
+    fileId: number;
+    userId: string;
+  }) {
+    return await db
+      .update(filesSchema)
+      .set({ trashed: 0 })
+      .where(
+        and(
+          eq(filesSchema.id, input.fileId),
+          eq(filesSchema.ownerId, input.userId),
+        ),
+      );
+  },
+
+  restoreFolderFromTrash: async function(input: {
+    folderId: number;
+    userId: string;
+  }) {
+    return await db
+      .update(foldersSchema)
+      .set({ trashed: 0 })
       .where(
         and(
           eq(foldersSchema.id, input.folderId),

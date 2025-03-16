@@ -30,6 +30,7 @@ export const files_table = createTable(
     url: text("url").notNull(),
     parent: bigint("parent", { mode: "number", unsigned: true }).notNull(),
     created_at: timestamp("created_at").notNull().defaultNow(),
+    trashed: int("trashed").notNull().default(0),
   },
   (t) => {
     return [
@@ -52,6 +53,7 @@ export const folders_table = createTable(
     name: text("name").notNull(),
     parent: bigint("parent", { mode: "number", unsigned: true }),
     created_at: timestamp("created_at").notNull().defaultNow(),
+    trashed: int("trashed").notNull().default(0),
   },
   (t) => {
     return [
