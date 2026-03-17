@@ -14,7 +14,7 @@ export default function Sandbox() {
         onChange={(e) => {
           setNum(e.target.value);
         }}
-        className="text-black bg-white"
+        className="bg-white text-black"
       />
       <p>{formatFileSize(Number(num))}</p>
     </div>

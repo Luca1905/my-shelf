@@ -49,7 +49,7 @@ export async function renameFile(fileId: number, newName: string) {
     fileId: fileId,
     newName: newName,
     userId: session.userId,
-  })
+  });
 
   console.log(dbRenameResult);
 
@@ -99,13 +99,13 @@ export async function renameFolder(folderId: number, newName: string) {
 
 export async function deleteFolder(folderId: number) {
   const session = await auth();
-  if (!session.userId) {  
+  if (!session.userId) {
     return { error: "Unauthorized" };
   }
 
   const folder = await QUERIES.getFolderById(folderId);
   if (!folder) {
-    return { error: "Folder not found"};
+    return { error: "Folder not found" };
   }
   if (folder.ownerId !== session.userId) {
     return { error: "Unauthorized" };
@@ -162,18 +162,18 @@ export async function permanentlyDeleteFile(fileId: number) {
   if (!session.userId) {
     return { error: "Unauthorized" };
   }
-  
+
   const [file] = await db
     .select()
     .from(files_table)
     .where(
       and(
-        eq(files_table.id, fileId), 
+        eq(files_table.id, fileId),
         eq(files_table.ownerId, session.userId),
-        eq(files_table.trashed, 1)
+        eq(files_table.trashed, 1),
       ),
     );
-    
+
   if (!file) {
     return { error: "File not found or not in trash" };
   }
@@ -188,9 +188,9 @@ export async function permanentlyDeleteFile(fileId: number) {
     .delete(files_table)
     .where(
       and(
-        eq(files_table.id, fileId), 
+        eq(files_table.id, fileId),
         eq(files_table.ownerId, session.userId),
-        eq(files_table.trashed, 1)
+        eq(files_table.trashed, 1),
       ),
     );
 
@@ -204,7 +204,7 @@ export async function permanentlyDeleteFile(fileId: number) {
 
 export async function permanentlyDeleteFolder(folderId: number) {
   const session = await auth();
-  if (!session.userId) {  
+  if (!session.userId) {
     return { error: "Unauthorized" };
   }
 
@@ -215,12 +215,12 @@ export async function permanentlyDeleteFolder(folderId: number) {
       and(
         eq(folders_table.id, folderId),
         eq(folders_table.ownerId, session.userId),
-        eq(folders_table.trashed, 1)
+        eq(folders_table.trashed, 1),
       ),
     );
-    
+
   if (!folder[0]) {
-    return { error: "Folder not found or not in trash"};
+    return { error: "Folder not found or not in trash" };
   }
 
   const stk = [folderId];
@@ -236,7 +236,7 @@ export async function permanentlyDeleteFolder(folderId: number) {
       .select()
       .from(folders_table)
       .where(eq(folders_table.parent, currentFolderId));
-      
+
     const files = await db
       .select()
       .from(files_table)
@@ -261,13 +261,13 @@ export async function permanentlyDeleteFolder(folderId: number) {
         .select()
         .from(files_table)
         .where(eq(files_table.id, fileId));
-        
+
       if (file[0]) {
         await utApi.deleteFiles([
           file[0].url.replace("https://utfs.io/f/", ""),
         ]);
       }
-      
+
       await db
         .delete(files_table)
         .where(
@@ -335,7 +335,7 @@ export async function restoreFolderFromTrash(folderId: number) {
 
   while (stk.length > 0) {
     const currentFolderId = stk.pop()!;
-    
+
     if (currentFolderId !== folderId) {
       foldersToRestore.push(currentFolderId);
     }
@@ -347,18 +347,18 @@ export async function restoreFolderFromTrash(folderId: number) {
       .where(
         and(
           eq(folders_table.parent, currentFolderId),
-          eq(folders_table.trashed, 1)
-        )
+          eq(folders_table.trashed, 1),
+        ),
       );
-      
+
     const files = await db
       .select()
       .from(files_table)
       .where(
         and(
           eq(files_table.parent, currentFolderId),
-          eq(files_table.trashed, 1)
-        )
+          eq(files_table.trashed, 1),
+        ),
       );
 
     const userOwnedSubfolders = subfolders.filter(
@@ -409,9 +409,7 @@ export async function emptyTrash() {
 
   // Delete all trashed files from storage
   for (const file of trashedFiles) {
-    await utApi.deleteFiles([
-      file.url.replace("https://utfs.io/f/", ""),
-    ]);
+    await utApi.deleteFiles([file.url.replace("https://utfs.io/f/", "")]);
   }
 
   // Delete all trashed files from database

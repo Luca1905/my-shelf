@@ -14,8 +14,14 @@ export const metadata: Metadata = {
     default: "My Shelf",
     template: "%s | My Shelf",
   },
-  description: "Securely store, access, and share your files from anywhere. My Shelf provides a simple and efficient way to manage your digital life.",
-  keywords: ["file storage", "cloud storage", "file sharing", "document management"],
+  description:
+    "Securely store, access, and share your files from anywhere. My Shelf provides a simple and efficient way to manage your digital life.",
+  keywords: [
+    "file storage",
+    "cloud storage",
+    "file sharing",
+    "document management",
+  ],
   authors: [{ name: "My Shelf" }],
   creator: "My Shelf",
   icons: [
@@ -43,7 +49,7 @@ export default function RootLayout({
         <head />
         <body
           className={`${inter.className} bg-background text-foreground antialiased`}
-          style={{ overflow: 'hidden' }}
+          style={{ overflow: "hidden" }}
         >
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <PostHogProvider>{children}</PostHogProvider>

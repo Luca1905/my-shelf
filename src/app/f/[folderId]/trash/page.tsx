@@ -26,4 +26,4 @@ export default async function TrashPage() {
       rootFolderId={rootFolder.id}
     />
   );
-} 
+}

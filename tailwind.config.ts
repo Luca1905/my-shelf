@@ -67,5 +67,5 @@ export default withUt({
       },
     },
   },
-  plugins: [animate, require('tailwind-scrollbar')],
+  plugins: [animate, require("tailwind-scrollbar")],
 }) satisfies Config;

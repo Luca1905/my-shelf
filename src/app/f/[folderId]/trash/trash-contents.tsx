@@ -1,17 +1,12 @@
 "use client";
 
-import { 
-  FileIcon, 
-  FolderIcon, 
-  RefreshCwIcon, 
-  Trash2Icon,
-} from "lucide-react";
-import { 
-  emptyTrash, 
-  permanentlyDeleteFile, 
-  permanentlyDeleteFolder, 
-  restoreFileFromTrash, 
-  restoreFolderFromTrash 
+import { FileIcon, FolderIcon, RefreshCwIcon, Trash2Icon } from "lucide-react";
+import {
+  emptyTrash,
+  permanentlyDeleteFile,
+  permanentlyDeleteFolder,
+  restoreFileFromTrash,
+  restoreFolderFromTrash,
 } from "~/server/actions";
 import type { files_table, folders_table } from "~/server/db/schema";
 import Link from "next/link";
@@ -75,7 +70,11 @@ export default function TrashContents(props: {
             <Button
               variant="destructive"
               onClick={() => setIsConfirmEmptyOpen(true)}
-              disabled={isPending || isEmptyingTrash || (props.files.length === 0 && props.folders.length === 0)}
+              disabled={
+                isPending ||
+                isEmptyingTrash ||
+                (props.files.length === 0 && props.folders.length === 0)
+              }
             >
               {isEmptyingTrash ? (
                 <LoadingSpinner className="mr-2" />
@@ -86,7 +85,7 @@ export default function TrashContents(props: {
             </Button>
           </div>
         </div>
-        
+
         <div className="rounded-lg bg-gray-800 shadow-xl">
           <div className="sticky top-0 z-10 border-b border-gray-700 bg-gray-800 px-6 py-4">
             <div className="grid grid-cols-12 gap-4 text-sm font-medium text-gray-400">
@@ -96,7 +95,7 @@ export default function TrashContents(props: {
               <div className="col-span-2">Actions</div>
             </div>
           </div>
-          
+
           <div className="max-h-[calc(100vh-215px)] overflow-y-auto scrollbar scrollbar-thumb-sky-700">
             {props.folders.length === 0 && props.files.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center text-gray-400">
@@ -125,7 +124,8 @@ export default function TrashContents(props: {
           <DialogHeader>
             <DialogTitle>Empty Trash</DialogTitle>
             <DialogDescription>
-              Are you sure you want to permanently delete all items in trash? This action cannot be undone.
+              Are you sure you want to permanently delete all items in trash?
+              This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
@@ -203,7 +203,10 @@ function TrashedFileRow({ file }: { file: typeof files_table.$inferSelect }) {
 
   return (
     <>
-      <li key={file.id} className={`group border-b border-gray-700 px-6 hover:bg-gray-700 ${isDisabled ? "opacity-50" : ""}`}>
+      <li
+        key={file.id}
+        className={`group border-b border-gray-700 px-6 hover:bg-gray-700 ${isDisabled ? "opacity-50" : ""}`}
+      >
         <div className="grid grid-cols-12 items-center gap-4 py-3">
           <div className="col-span-5 flex items-center">
             <div className="flex items-center text-gray-100">
@@ -251,7 +254,8 @@ function TrashedFileRow({ file }: { file: typeof files_table.$inferSelect }) {
           <DialogHeader>
             <DialogTitle>Confirm Permanent Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to permanently delete &ldquo;{file.name}&rdquo;? This action cannot be undone.
+              Are you sure you want to permanently delete &ldquo;{file.name}
+              &rdquo;? This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
@@ -278,7 +282,11 @@ function TrashedFileRow({ file }: { file: typeof files_table.$inferSelect }) {
   );
 }
 
-function TrashedFolderRow({ folder }: { folder: typeof folders_table.$inferSelect }) {
+function TrashedFolderRow({
+  folder,
+}: {
+  folder: typeof folders_table.$inferSelect;
+}) {
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -329,7 +337,10 @@ function TrashedFolderRow({ folder }: { folder: typeof folders_table.$inferSelec
 
   return (
     <>
-      <li key={folder.id} className={`group border-b border-gray-700 px-6 hover:bg-gray-700 ${isDisabled ? "opacity-50" : ""}`}>
+      <li
+        key={folder.id}
+        className={`group border-b border-gray-700 px-6 hover:bg-gray-700 ${isDisabled ? "opacity-50" : ""}`}
+      >
         <div className="grid grid-cols-12 items-center gap-4 py-3">
           <div className="col-span-5 flex items-center">
             <div className="flex items-center text-gray-100">
@@ -375,7 +386,9 @@ function TrashedFolderRow({ folder }: { folder: typeof folders_table.$inferSelec
           <DialogHeader>
             <DialogTitle>Confirm Permanent Deletion</DialogTitle>
             <DialogDescription>
-              Are you sure you want to permanently delete folder &ldquo;{folder.name}&rdquo; and all its contents? This action cannot be undone.
+              Are you sure you want to permanently delete folder &ldquo;
+              {folder.name}&rdquo; and all its contents? This action cannot be
+              undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
@@ -400,4 +413,4 @@ function TrashedFolderRow({ folder }: { folder: typeof folders_table.$inferSelec
       </Dialog>
     </>
   );
-} 
+}

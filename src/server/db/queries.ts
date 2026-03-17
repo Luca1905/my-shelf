@@ -31,10 +31,7 @@ export const QUERIES = {
     return db
       .select()
       .from(filesSchema)
-      .where(and(
-        eq(filesSchema.parent, folderId),
-        eq(filesSchema.trashed, 0)
-      ))
+      .where(and(eq(filesSchema.parent, folderId), eq(filesSchema.trashed, 0)))
       .orderBy(filesSchema.id);
   },
 
@@ -42,10 +39,9 @@ export const QUERIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(and(
-        eq(foldersSchema.parent, folderId),
-        eq(foldersSchema.trashed, 0)
-      ))
+      .where(
+        and(eq(foldersSchema.parent, folderId), eq(foldersSchema.trashed, 0)),
+      )
       .orderBy(foldersSchema.id);
   },
 
@@ -71,12 +67,7 @@ export const QUERIES = {
     return db
       .select()
       .from(filesSchema)
-      .where(
-        and(
-          eq(filesSchema.ownerId, userId),
-          eq(filesSchema.trashed, 1)
-        )
-      )
+      .where(and(eq(filesSchema.ownerId, userId), eq(filesSchema.trashed, 1)))
       .orderBy(filesSchema.id);
   },
 
@@ -85,10 +76,7 @@ export const QUERIES = {
       .select()
       .from(foldersSchema)
       .where(
-        and(
-          eq(foldersSchema.ownerId, userId),
-          eq(foldersSchema.trashed, 1)
-        )
+        and(eq(foldersSchema.ownerId, userId), eq(foldersSchema.trashed, 1)),
       )
       .orderBy(foldersSchema.id);
   },
@@ -96,7 +84,7 @@ export const QUERIES = {
   getTrashFolderForUser: async function (userId: string) {
     const rootFolder = await QUERIES.getRootFolderForUser(userId);
     if (!rootFolder) return null;
-    
+
     const trashFolder = await db
       .select()
       .from(foldersSchema)
@@ -104,12 +92,12 @@ export const QUERIES = {
         and(
           eq(foldersSchema.ownerId, userId),
           eq(foldersSchema.parent, rootFolder.id),
-          eq(foldersSchema.name, "Trash")
-        )
+          eq(foldersSchema.name, "Trash"),
+        ),
       );
-    
+
     return trashFolder[0];
-  }
+  },
 };
 
 export const MUTATIONS = {
@@ -173,10 +161,7 @@ export const MUTATIONS = {
       );
   },
 
-  moveFileToTrash: async function(input: {
-    fileId: number;
-    userId: string;
-  }) {
+  moveFileToTrash: async function (input: { fileId: number; userId: string }) {
     return await db
       .update(filesSchema)
       .set({ trashed: 1 })
@@ -188,7 +173,7 @@ export const MUTATIONS = {
       );
   },
 
-  moveFolderToTrash: async function(input: {
+  moveFolderToTrash: async function (input: {
     folderId: number;
     userId: string;
   }) {
@@ -203,7 +188,7 @@ export const MUTATIONS = {
       );
   },
 
-  restoreFileFromTrash: async function(input: {
+  restoreFileFromTrash: async function (input: {
     fileId: number;
     userId: string;
   }) {
@@ -218,7 +203,7 @@ export const MUTATIONS = {
       );
   },
 
-  restoreFolderFromTrash: async function(input: {
+  restoreFolderFromTrash: async function (input: {
     folderId: number;
     userId: string;
   }) {

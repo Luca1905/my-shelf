@@ -6,7 +6,6 @@ import { MUTATIONS, QUERIES } from "~/server/db/queries";
 
 const f = createUploadthing();
 
-
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
@@ -20,9 +19,11 @@ export const ourFileRouter = {
       maxFileCount: 15,
     },
   })
-    .input(z.object({
-      folderId: z.number(),
-    }))
+    .input(
+      z.object({
+        folderId: z.number(),
+      }),
+    )
     // Set permissions and file types for this FileRoute
     .middleware(async ({ input }) => {
       // This code runs on your server before upload
@@ -38,7 +39,8 @@ export const ourFileRouter = {
       if (!folder) throw new UploadThingError("Folder not found");
 
       // eslint-disable-next-line @typescript-eslint/only-throw-error
-      if (folder.ownerId !== user.userId) throw new UploadThingError("Unauthorized");
+      if (folder.ownerId !== user.userId)
+        throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: user.userId, parentId: input.folderId };

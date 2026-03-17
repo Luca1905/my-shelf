@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 export default async function GoogleDriveClone(props: {
-  params: Promise<{ folderId: string }>
+  params: Promise<{ folderId: string }>;
 }) {
   const session = await auth();
   if (!session.userId) {
@@ -25,10 +25,10 @@ export default async function GoogleDriveClone(props: {
   const parsedFolderId = data.folderId;
   const folder = await QUERIES.getFolderById(parsedFolderId);
   if (!folder) {
-    return <div>Folder not found</div>
+    return <div>Folder not found</div>;
   }
   if (folder.ownerId !== session.userId) {
-    return <div>You are not the owner of this folder</div>
+    return <div>You are not the owner of this folder</div>;
   }
 
   const [files, folders, parents] = await Promise.all([
