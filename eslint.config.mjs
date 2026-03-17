@@ -39,6 +39,8 @@ export default defineConfig(
           },
         },
       ],
+    "no-throw-literal": "off",
+    "@typescript-eslint/only-throw-error": "off"
     },
   },
   {
