@@ -5,7 +5,6 @@ import { useUploadThing } from "~/utils/uploadthing";
 import { toast } from "sonner";
 import { usePostHog } from "posthog-js/react";
 import { Upload } from "lucide-react";
-import { useRef } from "react";
 
 import { generateMimeTypes, UploadAbortedError } from "uploadthing/client";
 
@@ -51,13 +50,11 @@ const useUploadThingInputProps = (folderId: number, ...args: Input) => {
 export function SimpleUploadButton({ folderId }: { folderId: number }) {
   const navigate = useRouter();
   const posthog = usePostHog();
-  const acRef = useRef(new AbortController());
 
   const { inputProps, isUploading } = useUploadThingInputProps(
     folderId,
     "shelfUploader",
     {
-      signal: acRef.current.signal,
       onUploadBegin() {
         posthog.capture("upload_begin");
         toast.loading("Uploading...", {
@@ -65,8 +62,6 @@ export function SimpleUploadButton({ folderId }: { folderId: number }) {
           cancel: {
             label: "Cancel",
             onClick: () => {
-              acRef.current.abort();
-              acRef.current = new AbortController();
               console.log("upload cancelled requested");
             },
           },

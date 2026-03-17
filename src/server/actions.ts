@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { files_table, folders_table } from "./db/schema";
 import { db } from "./db";
 import { auth } from "@clerk/nextjs/server";
