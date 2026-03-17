@@ -37,11 +37,11 @@
     }
   },
   "include": [
-    ".eslintrc.cjs",
+    "eslint.config.mjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.cjs",
+    "**/*.mjs",
     "**/*.js",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"

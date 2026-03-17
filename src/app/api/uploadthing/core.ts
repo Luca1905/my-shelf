@@ -38,7 +38,6 @@ export const ourFileRouter = {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!folder) throw new UploadThingError("Folder not found");
 
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (folder.ownerId !== user.userId)
         throw new UploadThingError("Unauthorized");
 
