@@ -95,7 +95,7 @@ export function FileRow({ file }: { file: typeof files_table.$inferSelect }) {
                     type="text"
                     value={newName}
                     onChange={(e) => setNewName(e.target.value)}
-                    className="w-full bg-transparent text-gray-100 focus:outline-none"
+                    className="w-full bg-transparent text-gray-100 focus:outline-hidden"
                     onBlur={handleRename}
                   />
                 </form>

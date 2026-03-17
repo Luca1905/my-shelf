@@ -21,10 +21,10 @@ export default function Home() {
   return (
     <>
       <div className="space-y-8">
-        <h1 className="overflow-visible bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-7xl font-extrabold tracking-tight text-transparent sm:text-8xl md:text-9xl">
+        <h1 className="overflow-visible bg-linear-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-7xl font-extrabold tracking-tight text-transparent sm:text-8xl md:text-9xl">
           My Shelf
         </h1>
-        <p className="mx-auto max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
+        <p className="mx-auto max-w-2xl leading-normal text-muted-foreground sm:text-xl sm:leading-8">
           Securely store, access, and share your files from anywhere. My Shelf
           provides a simple and efficient way to manage your digital life.
         </p>
